@@ -20,6 +20,7 @@ snake_surface.fill('#00FF00')
 snake_pos_x = 200
 snake_pos_y = 100
 
+snake_rect = snake_surface.get_rect(topleft=(snake_pos_x, snake_pos_y))
 snake_vel_x = snake_piece_w
 
 text_surface = test_font.render('Prova', False, '#FFFFFF')
@@ -35,7 +36,8 @@ while True:
     snake_pos_x += snake_vel_x
     if snake_pos_x > width + snake_piece_w:
         snake_pos_x = 0
-    screen.blit(snake_surface, (snake_pos_x, snake_pos_y))
+    snake_rect.left = snake_pos_x
+    screen.blit(snake_surface, snake_rect)
 
     screen.blit(text_surface, (700, 30))
 
