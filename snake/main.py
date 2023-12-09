@@ -12,10 +12,15 @@ clock = pygame.time.Clock()
 
 test_font = pygame.font.Font(None, 30)
 
-test_surface_w = 20
-test_surface_h = 20
-test_surface = pygame.Surface((test_surface_w, test_surface_h))
-test_surface.fill('#00FF00')
+snake_piece_w = 20
+snake_piece_h = 20
+snake_surface = pygame.Surface((snake_piece_w, snake_piece_h))
+snake_surface.fill('#00FF00')
+
+snake_pos_x = 200
+snake_pos_y = 100
+
+snake_vel_x = snake_piece_w
 
 text_surface = test_font.render('Prova', False, '#FFFFFF')
 
@@ -25,8 +30,13 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+    screen.fill('#000000')
 
-    screen.blit(test_surface, (200, 100))
+    snake_pos_x += snake_vel_x
+    if snake_pos_x > width + snake_piece_w:
+        snake_pos_x = 0
+    screen.blit(snake_surface, (snake_pos_x, snake_pos_y))
+
     screen.blit(text_surface, (700, 30))
 
     pygame.display.update()
