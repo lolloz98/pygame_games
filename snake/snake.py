@@ -12,6 +12,15 @@ class Snake:
         self.appliedMotion = (0, 0)
         self.needToAdd = False
 
+    def __len__(self):
+        return len(self.parts)
+
+    def headPos(self):
+        return self.parts[0].rect.x, self.parts[0].rect.y
+
+    def tailPos(self):
+        return self.parts[-1].rect.x, self.parts[-1].rect.y
+
     def changeMotionToUp(self):
         if self.appliedMotion[1] <= 0:
             self.motion = (0, -self.speed)

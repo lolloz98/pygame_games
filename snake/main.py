@@ -1,9 +1,15 @@
 import pygame
 from sys import exit
 from snake import Snake
+from tile_manager import TileManager
+from food import Food
 
 width = 800
 height = 400
+grid_w = 20
+grid_h = 20
+snake_init_x = 100
+snake_init_y = 100
 
 pygame.init()
 
@@ -14,15 +20,14 @@ clock = pygame.time.Clock()
 
 test_font = pygame.font.Font(None, 30)
 
-snake = Snake()
+snake = Snake(snake_init_x, snake_init_y, grid_w, grid_h)
+tile_manager = TileManager(width, height, grid_w, grid_h, snake_init_x, snake_init_y)
 
 text_surface = test_font.render('Prova', False, '#FFFFFF')
 
-food_piece_w = 20
-food_piece_h = 20
-food_surface = pygame.Surface((food_piece_w, food_piece_h))
-food_surface.fill('#FF0000')
-food_rect = food_surface.get_rect(topleft=(100, 100))
+food = Food()
+foodGroup = pygame.sprite.Group()
+foodGroup.add(food)
 
 while True:
     # draw our elements and update everything
@@ -42,17 +47,24 @@ while True:
 
     screen.fill('#000000')
 
+    foodGroup.draw(screen)
     snake.draw(screen)
 
-    if food_rect.colliderect(snake.parts[0].rect):
+    # we just move the food, no need to recreate it
+    if pygame.sprite.groupcollide(foodGroup, snake.head, True, False):
         snake.setNeedToAdd()
+        # update food
+        try:
+            food = Food(grid_w, grid_h, *tile_manager.getRandomFreeTile())
+            foodGroup.add(food)
+        except IndexError:
+            print("No more empty tiles :)")
 
     snake.applyMotion(width, height)
     snake.applyAdd()
+    tile_manager.update(len(snake), snake.headPos(), snake.tailPos())
 
-    screen.blit(food_surface, food_rect)
     screen.blit(text_surface, (700, 30))
-
     pygame.display.update()
     # this function says that the loop will not run
     # at more than 60 times per second.

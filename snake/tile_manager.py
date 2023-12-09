@@ -14,12 +14,13 @@ class TileManager:
         self.free.remove(self.last)
         self.snake_size = 1
 
-    def update(self, snake_size, next_x, next_y, last_x=0, last_y=0):
+    def update(self, snake_size, next, last):
         if snake_size > self.snake_size:
             self.snake_size = snake_size
             self.free.add(self.last)
-            self.last = (last_x, last_y)
-        self.free.remove((next_x, next_y))
+            self.last = last
+        if next in self.free:
+            self.free.remove(next)
 
     def getRandomFreeTile(self):
         return random.choice(list(self.free))
