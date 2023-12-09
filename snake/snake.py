@@ -70,6 +70,9 @@ class Snake:
         self.head.draw(screen)
         self.body.draw(screen)
 
+    def isDead(self):
+        return pygame.sprite.groupcollide(self.head, self.body, False, False)
+
 
 class Head(pygame.sprite.Sprite):
     def __init__(self, x=200, y=100, w=20, h=20):
