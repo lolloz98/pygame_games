@@ -37,6 +37,12 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w:
+                print('up')
+            if event.key == pygame.K_d:
+                print('right')
+
     screen.fill('#000000')
 
     snake_pos_x += snake_vel_x
