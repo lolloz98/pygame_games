@@ -25,8 +25,6 @@ test_font = pygame.font.Font(None, 30)
 snake = Snake(snake_init_x, snake_init_y, grid_w, grid_h)
 tile_manager = TileManager(width, height, grid_w, grid_h, snake_init_x, snake_init_y)
 
-text_surface = test_font.render('Prova', False, '#FFFFFF')
-
 food = Food(grid_w, grid_h, food_init_x, food_init_y)
 
 while True:
@@ -67,6 +65,8 @@ while True:
     snake.applyMotion(width, height)
     snake.applyAdd()
     tile_manager.update(len(snake), snake.headPos(), snake.tailPos())
+
+    text_surface = test_font.render('Score: ' + str(len(snake)), False, '#FFFFFF')
 
     screen.blit(text_surface, (700, 30))
     pygame.display.update()
