@@ -13,7 +13,6 @@ class TileManager:
         for b in blocks:
             x = b.rect.x // self.block_size[0]
             y = b.rect.y // self.block_size[1]
-            # print(x, y, len(self.grid), len(self.grid[0]))
             self.grid[y][x] = b
 
     def moveDownBlocksIfRowDel(self, rowToDel):
@@ -32,7 +31,6 @@ class TileManager:
         for (i, r) in enumerate(self.grid):
             if None not in r:
                 rowToDel.append((i, r))
-                print(i, end="")
 
         n = len(rowToDel)
 
