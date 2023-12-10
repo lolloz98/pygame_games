@@ -40,7 +40,7 @@ def lPiece(center, size_of_block, color='#FFA500'):
         [(xs, 0), (0, 0), (-xs, 0), (-xs, -ys)],
         [(0, -2 * ys), (0, -ys), (0, 0), (-xs, 0)],
     ]
-    return _buildPiece(center, size_of_block, positions, color)
+    return _buildPiece(center, size_of_block, positions, color, [(0, 0), (0, -ys), (-xs, 0), (0, 0)])
 
 
 def tetris(center, size_of_block, color='#ADD8E6'):
