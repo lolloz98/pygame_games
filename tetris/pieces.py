@@ -41,6 +41,24 @@ def tetris(center, size_of_block, color='#ADD8E6'):
     return _buildPiece(center, size_of_block, positions, color)
 
 
+def zigL(center, size_of_block, color='#FFA500'):
+    xs, ys = size_of_block
+    positions = [
+        [(-2 * xs, 0), (-xs, 0), (-xs, -ys), (0, -ys)],
+        [(-xs, -ys), (-xs, 0), (0, 0), (0, ys)],
+    ]
+    return _buildPiece(center, size_of_block, positions, color)
+
+
+def zigR(center, size_of_block, color='#FF0000'):
+    xs, ys = size_of_block
+    positions = [
+        [(-2 * xs, -ys), (-xs, 0), (-xs, -ys), (0, 0)],
+        [(0, -2 * ys), (-xs, -ys), (0, -ys), (-xs, 0)],
+    ]
+    return _buildPiece(center, size_of_block, positions, color)
+
+
 class Piece:
     def __init__(self, center, size_of_block, blocks, positions):
         self.blocks = blocks
