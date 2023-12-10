@@ -10,13 +10,13 @@ grid_s = (30, 30)
 pygame.init()
 
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Snake')
+pygame.display.set_caption('Tetris')
 # To control the max frame rate:
 clock = pygame.time.Clock()
 
 test_font = pygame.font.Font(None, 20)
 
-piece = pieces.lPiece((60, 60), grid_s)
+piece = pieces.tetris((60, 60), grid_s)
 
 while True:
     # draw our elements and update everything

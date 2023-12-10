@@ -11,14 +11,17 @@ class Dir(Enum):
     RIGHT = 1
 
 
-def cube(center, size_of_block):
+def _buildPiece(center, size_of_block, positions, color='Red'):
+    return Piece(center, size_of_block, [SingleBlock(color, size_of_block) for i in positions[0]], positions)
+
+
+def cube(center, size_of_block, color='#FFFF00'):
     xs, ys = size_of_block
     positions = [[(-xs, -ys), (0, -ys), (-xs, 0), (0, 0)]]
-    blocks = [SingleBlock(size=size_of_block) for i in range(4)]
-    return Piece(center, size_of_block, blocks, positions)
+    return _buildPiece(center, size_of_block, positions, color)
 
 
-def lPiece(center, size_of_block):
+def lPiece(center, size_of_block, color='#FFA500'):
     xs, ys = size_of_block
     positions = [
         [(-2 * xs, -ys), (-xs, -ys), (0, -ys), (0, 0)],
@@ -26,8 +29,16 @@ def lPiece(center, size_of_block):
         [(xs, 0), (0, 0), (-xs, 0), (-xs, -ys)],
         [(0, -2 * ys), (0, -ys), (0, 0), (-xs, 0)],
     ]
-    blocks = [SingleBlock(size=size_of_block) for i in range(4)]
-    return Piece(center, size_of_block, blocks, positions)
+    return _buildPiece(center, size_of_block, positions, color)
+
+
+def tetris(center, size_of_block, color='#ADD8E6'):
+    xs, ys = size_of_block
+    positions = [
+        [(-2 * xs, 0), (-xs, 0), (0, 0), (xs, 0)],
+        [(0, 2 * ys), (0, ys), (0, 0), (0, -ys)],
+    ]
+    return _buildPiece(center, size_of_block, positions, color)
 
 
 class Piece:
