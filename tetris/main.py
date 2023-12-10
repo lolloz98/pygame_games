@@ -17,6 +17,7 @@ pygame.display.set_caption('Tetris')
 clock = pygame.time.Clock()
 
 test_font = pygame.font.Font(None, 20)
+die_font = pygame.font.Font(None, 50)
 
 piece: pieces.Piece
 tile_manager: TileManager
@@ -61,6 +62,7 @@ while True:
                 piece.rotate(tile_manager.group)
     if started:
         piece.down()
+
     if piece.collidedBefore():
         if piece.isCollided(tile_manager.group, height):
             piece.up()
@@ -75,7 +77,7 @@ while True:
                 died = True
         else:
             piece.setHasCollided(False)
-    if piece.isCollided(tile_manager.group, height):
+    if not died and piece.isCollided(tile_manager.group, height):
         piece.up()
         piece.setHasCollided()
 
@@ -85,5 +87,13 @@ while True:
     text_surface = test_font.render('Score: ' + str(score), False, '#FFFFFF')
 
     screen.blit(text_surface, (int(width * 0.70), int(height * 0.03)))
+    if died:
+        screen.fill('#000000')
+        died_surface = die_font.render('You Died!', False, '#FFFFFF')
+        die_rect = died_surface.get_rect(midbottom=(int(width * 0.5), int(height * 0.5)))
+        screen.blit(died_surface, die_rect)
+        big_score_surface = die_font.render('Score: ' + str(score), False, '#FFFFFF')
+        big_score_ret = died_surface.get_rect(midtop=(int(width * 0.5), int(height * 0.5)))
+        screen.blit(big_score_surface, big_score_ret)
     pygame.display.update()
     clock.tick(5)
