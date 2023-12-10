@@ -18,7 +18,7 @@ def cube(center, size_of_block):
     return Piece(center, size_of_block, blocks, positions)
 
 
-def l(center, size_of_block):
+def lPiece(center, size_of_block):
     xs, ys = size_of_block
     positions = [
         [(-2 * xs, -ys), (-xs, -ys), (0, -ys), (0, 0)],
@@ -74,12 +74,6 @@ class Piece:
             return True
         for b in self.blocks:
             if b.rect.y == ground:
-                return True
-        return False
-
-    def isDead(self, max_h):
-        for b in self.blocks:
-            if b.rect.y + self.size_of_block[1] == max_h:
                 return True
         return False
 
