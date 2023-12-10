@@ -13,22 +13,37 @@ class TileManager:
         for b in blocks:
             x = b.rect.x // self.block_size[0]
             y = b.rect.y // self.block_size[1]
-            self.grid[x][y] = b
+            # print(x, y, len(self.grid), len(self.grid[0]))
+            self.grid[y][x] = b
+
+    def moveDownBlocksIfRowDel(self, rowToDel):
+        rowToDel.insert(0, (0, []))
+        move = 1
+        for i in range(len(rowToDel) - 1, 0, -1):
+            for j in range(rowToDel[i - 1][0] + 1, rowToDel[i][0]):
+                for block in self.grid[j]:
+                    if block is not None:
+                        block.rect.y += move * self.block_size[1]
+            move += 1
+        rowToDel.pop(0)
 
     def detectAndDeleteCompleteRows(self):
         rowToDel = []
-        for r in reversed(self.grid):
+        for (i, r) in enumerate(self.grid):
             if None not in r:
-                rowToDel.append(r)
+                rowToDel.append((i, r))
+                print(i, end="")
 
         n = len(rowToDel)
 
-        for r in rowToDel:
-            self.group.remove(r)
-            self.grid.remove(r)
+        self.moveDownBlocksIfRowDel(rowToDel)
+
+        for ir in reversed(rowToDel):
+            self.group.remove(ir[1])
+            self.grid.pop(ir[0])
 
         for i in range(n):
-            self.grid.append([None for w in range(self.grid_size[0] // self.block_size[0])])
+            self.grid.insert(0, [None for w in range(self.grid_size[0] // self.block_size[0])])
         return n
 
     def draw(self, screen):

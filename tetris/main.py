@@ -19,6 +19,7 @@ test_font = pygame.font.Font(None, 20)
 
 piece = pieces.generateRandomPiece((60, 60), block_size)
 tile_manager = TileManager((width, height), block_size)
+score = 0
 
 while True:
     # draw our elements and update everything
@@ -28,22 +29,35 @@ while True:
             exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
-                piece.move(pieces.Dir.LEFT)
-                print('left')
+                piece.move(pieces.Dir.LEFT, tile_manager.group)
             if event.key == pygame.K_s:
-                piece.move(pieces.Dir.RIGHT)
-                print('right')
+                piece.move(pieces.Dir.RIGHT, tile_manager.group)
             if event.key == pygame.K_d:
-                print('down')
+                pass
             if event.key == pygame.K_f:
-                piece.rotate()
-                print('rotate')
+                piece.rotate(tile_manager.group)
+
+    piece.down()
+    if piece.collidedBefore():
+        if piece.isCollided(tile_manager.group, height):
+            piece.up()
+            tile_manager.addBlocks(piece.blocks)
+            s = tile_manager.detectAndDeleteCompleteRows()
+            while s != 0:
+                score += s
+                s = tile_manager.detectAndDeleteCompleteRows()
+            piece = pieces.generateRandomPiece((60, 60), block_size)
+        else:
+            piece.setHasCollided(False)
+    if piece.isCollided(tile_manager.group, height):
+        piece.up()
+        piece.setHasCollided()
 
     screen.fill('#000000')
     piece.draw(screen)
-
-    text_surface = test_font.render('Score: ', False, '#FFFFFF')
+    tile_manager.draw(screen)
+    text_surface = test_font.render('Score: ' + str(score), False, '#FFFFFF')
 
     screen.blit(text_surface, (int(width * 0.70), int(height * 0.03)))
     pygame.display.update()
-    clock.tick(15)
+    clock.tick(5)

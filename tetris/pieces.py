@@ -4,7 +4,8 @@ import random
 
 
 def generateRandomPiece(center, size_of_block):
-    pieces = [cube, lPiece, tetris, zigL, zigR, tPiece]
+    # pieces = [cube, lPiece, tetris, zigL, zigR, tPiece]
+    pieces = [cube, tPiece]
     return random.choice(pieces)(center, size_of_block)
 
 
@@ -94,17 +95,32 @@ class Piece:
         self.size_of_block = size_of_block
         self.center = center
         self.setBlocksPos()
+        self.hasCollided = False
 
     def setBlocksPos(self):
         for i, b in enumerate(self.blocks):
             b.rect.x = self.positions[self.current_pos][i][0] + self.center[0]
             b.rect.y = self.positions[self.current_pos][i][1] + self.center[1]
 
-    def rotate(self):
-        self.center = sub2(self.center, self.offsets[self.current_pos])
+    def _change_pos_to_back(self):
+        self.current_pos = (self.current_pos - 1)
+        if self.current_pos < 0:
+            self.current_pos = len(self.positions) - 1
+
+    def _change_pos_to_forward(self):
         self.current_pos = (self.current_pos + 1) % len(self.positions)
+
+    def rotate(self, collider_group):
+        self.center = sub2(self.center, self.offsets[self.current_pos])
+        self._change_pos_to_forward()
         self.center = sum2(self.center, self.offsets[self.current_pos])
         self.setBlocksPos()
+        if pygame.sprite.groupcollide(self.blocks, collider_group, False, False):
+            # revert rotation
+            self.center = sub2(self.center, self.offsets[self.current_pos])
+            self._change_pos_to_back()
+            self.center = sum2(self.center, self.offsets[self.current_pos])
+            self.setBlocksPos()
         self.moveBackIfOutOfScreen()
 
     def moveBackIfOutOfScreen(self):
@@ -113,19 +129,26 @@ class Piece:
         while self.isOutOfScreenR():
             self.updateCenter((-self.size_of_block[0], 0))
 
-    def move(self, direction: Dir):
+    def _move(self, direction: Dir):
         self.updateCenter((self.size_of_block[0] * direction.value, 0))
         self.moveBackIfOutOfScreen()
 
+    def move(self, direction: Dir, collider_group):
+        self._move(direction)
+        if pygame.sprite.groupcollide(self.blocks, collider_group, False, False):
+            self._move(Dir.LEFT if direction == Dir.RIGHT else Dir.RIGHT)
+
     def updateCenter(self, mov):
         self.center = sum2(self.center, mov)
-        print("center: ", self.center)
         self.setBlocksPos()
 
     def down(self):
         self.updateCenter((0, self.size_of_block[1]))
 
-    def isCollided(self, groupOfPieces, ground=0):
+    def up(self):
+        self.updateCenter((0, -self.size_of_block[1]))
+
+    def isCollided(self, groupOfPieces, ground):
         if pygame.sprite.groupcollide(self.group, groupOfPieces, False, False):
             return True
         for b in self.blocks:
@@ -147,6 +170,12 @@ class Piece:
 
     def draw(self, screen):
         self.group.draw(screen)
+
+    def setHasCollided(self, val=True):
+        self.hasCollided = val
+
+    def collidedBefore(self):
+        return self.hasCollided
 
 
 class SingleBlock(pygame.sprite.Sprite):
