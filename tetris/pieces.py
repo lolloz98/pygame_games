@@ -1,5 +1,11 @@
 import pygame
 from enum import Enum
+import random
+
+
+def generateRandomPiece(center, size_of_block):
+    pieces = [cube, lPiece, tetris, zigL, zigR, tPiece]
+    return random.choice(pieces)(center, size_of_block)
 
 
 def sum2(one, two):

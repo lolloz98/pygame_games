@@ -1,11 +1,12 @@
 import pygame
 from sys import exit
 import pieces
+from tile_manager import TileManager
 
 # grid is 10x20
 width = 300
 height = 600
-grid_s = (30, 30)
+block_size = (30, 30)
 
 pygame.init()
 
@@ -16,7 +17,8 @@ clock = pygame.time.Clock()
 
 test_font = pygame.font.Font(None, 20)
 
-piece = pieces.tPiece((60, 60), grid_s)
+piece = pieces.generateRandomPiece((60, 60), block_size)
+tile_manager = TileManager((width, height), block_size)
 
 while True:
     # draw our elements and update everything
