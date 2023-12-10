@@ -7,6 +7,7 @@ from tile_manager import TileManager
 width = 300
 height = 600
 block_size = (30, 30)
+spawn_point = ((width // (block_size[0] * 2)) * block_size[0], int(0.05 * height // block_size[1]) * block_size[1])
 
 pygame.init()
 
@@ -20,15 +21,18 @@ test_font = pygame.font.Font(None, 20)
 piece: pieces.Piece
 tile_manager: TileManager
 score: int
+started: bool
 
 
 def reset():
     global piece
-    piece = pieces.generateRandomPiece((60, 60), block_size)
+    piece = pieces.generateRandomPiece(spawn_point, block_size)
     global tile_manager
     tile_manager = TileManager((width, height), block_size)
     global score
     score = 0
+    global started
+    started = False
 
 
 reset()
@@ -40,6 +44,7 @@ while True:
             pygame.quit()
             exit()
         if event.type == pygame.KEYDOWN:
+            started = True
             if event.key == pygame.K_a:
                 piece.move(pieces.Dir.LEFT, tile_manager.group)
             if event.key == pygame.K_s:
@@ -48,8 +53,8 @@ while True:
                 pass
             if event.key == pygame.K_f:
                 piece.rotate(tile_manager.group)
-
-    piece.down()
+    if started:
+        piece.down()
     if piece.collidedBefore():
         if piece.isCollided(tile_manager.group, height):
             piece.up()
@@ -58,7 +63,7 @@ while True:
             while s != 0:
                 score += s * s
                 s = tile_manager.detectAndDeleteCompleteRows()
-            piece = pieces.generateRandomPiece((60, 60), block_size)
+            piece = pieces.generateRandomPiece(spawn_point, block_size)
             if piece.isCollided(tile_manager.group, height):
                 # DEATH
                 reset()
