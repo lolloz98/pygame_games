@@ -44,7 +44,7 @@ while True:
             tile_manager.addBlocks(piece.blocks)
             s = tile_manager.detectAndDeleteCompleteRows()
             while s != 0:
-                score += s
+                score += s * s
                 s = tile_manager.detectAndDeleteCompleteRows()
             piece = pieces.generateRandomPiece((60, 60), block_size)
         else:
