@@ -4,7 +4,7 @@ import random
 
 
 def generateRandomPiece(center, size_of_block):
-    pieces = [cube, lPiece, tetris, zigL, zigR, tPiece]
+    pieces = [cube, lPiece, lPieceR, tetris, zigL, zigR, tPiece]
     # pieces = [cube, tPiece]
     return random.choice(pieces)(center, size_of_block)
 
@@ -41,6 +41,17 @@ def lPiece(center, size_of_block, color='#FFA500'):
         [(0, -2 * ys), (0, -ys), (0, 0), (-xs, 0)],
     ]
     return _buildPiece(center, size_of_block, positions, color, [(0, 0), (0, -ys), (-xs, 0), (0, 0)])
+
+
+def lPieceR(center, size_of_block, color='#0000FF'):
+    xs, ys = size_of_block
+    positions = [
+        [(-2 * xs, -ys), (-xs, -ys), (0, -ys), (-2 * xs, 0)],
+        [(-xs, ys), (-xs, 0), (-xs, -ys), (-2 * xs, -ys)],
+        [(xs, 0), (0, 0), (-xs, 0), (xs, -ys)],
+        [(0, -2 * ys), (0, -ys), (0, 0), (xs, 0)],
+    ]
+    return _buildPiece(center, size_of_block, positions, color, [(0, 0), (0, -ys), (-xs, 0), (-xs, 0)])
 
 
 def tetris(center, size_of_block, color='#ADD8E6'):
