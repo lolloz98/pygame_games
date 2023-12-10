@@ -22,6 +22,7 @@ piece: pieces.Piece
 tile_manager: TileManager
 score: int
 started: bool
+died: bool
 
 
 def reset():
@@ -33,6 +34,8 @@ def reset():
     score = 0
     global started
     started = False
+    global died
+    died = False
 
 
 reset()
@@ -44,7 +47,10 @@ while True:
             pygame.quit()
             exit()
         if event.type == pygame.KEYDOWN:
-            started = True
+            if died:
+                reset()
+            else:
+                started = True
             if event.key == pygame.K_a:
                 piece.move(pieces.Dir.LEFT, tile_manager.group)
             if event.key == pygame.K_s:
@@ -65,9 +71,8 @@ while True:
                 s = tile_manager.detectAndDeleteCompleteRows()
             piece = pieces.generateRandomPiece(spawn_point, block_size)
             if piece.isCollided(tile_manager.group, height):
-                # DEATH
-                reset()
-                pass
+                started = False
+                died = True
         else:
             piece.setHasCollided(False)
     if piece.isCollided(tile_manager.group, height):
