@@ -4,8 +4,8 @@ import random
 
 
 def generateRandomPiece(center, size_of_block):
-    # pieces = [cube, lPiece, tetris, zigL, zigR, tPiece]
-    pieces = [cube, tPiece]
+    pieces = [cube, lPiece, tetris, zigL, zigR, tPiece]
+    # pieces = [cube, tPiece]
     return random.choice(pieces)(center, size_of_block)
 
 
@@ -52,7 +52,7 @@ def tetris(center, size_of_block, color='#ADD8E6'):
     return _buildPiece(center, size_of_block, positions, color)
 
 
-def zigL(center, size_of_block, color='#FFA500'):
+def zigL(center, size_of_block, color='#00FF00'):
     xs, ys = size_of_block
     positions = [
         [(-2 * xs, 0), (-xs, 0), (-xs, -ys), (0, -ys)],
