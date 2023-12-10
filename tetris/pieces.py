@@ -6,13 +6,17 @@ def sum2(one, two):
     return one[0] + two[0], one[1] + two[1]
 
 
+def sub2(one, two):
+    return one[0] - two[0], one[1] - two[1]
+
+
 class Dir(Enum):
     LEFT = -1
     RIGHT = 1
 
 
-def _buildPiece(center, size_of_block, positions, color='Red'):
-    return Piece(center, size_of_block, [SingleBlock(color, size_of_block) for i in positions[0]], positions)
+def _buildPiece(center, size_of_block, positions, color='Red', offsets=None):
+    return Piece(center, size_of_block, [SingleBlock(color, size_of_block) for i in positions[0]], positions, offsets)
 
 
 def cube(center, size_of_block, color='#FFFF00'):
@@ -59,10 +63,25 @@ def zigR(center, size_of_block, color='#FF0000'):
     return _buildPiece(center, size_of_block, positions, color)
 
 
+def tPiece(center, size_of_block, color='#A020F0'):
+    xs, ys = size_of_block
+    positions = [
+        [(-xs, -ys), (0, -ys), (xs, -ys), (0, 0)],
+        [(0, 0), (0, -ys), (0, -2 * ys), (-xs, -ys)],
+        [(-xs, 0), (0, 0), (xs, 0), (0, -ys)],
+        [(-xs, ys), (-xs, 0), (-xs, -ys), (0, 0)],
+    ]
+    offsets = [(0, 0), (0, 0), (0, 0), (0, -ys)]
+    return _buildPiece(center, size_of_block, positions, color, offsets)
+
+
 class Piece:
-    def __init__(self, center, size_of_block, blocks, positions):
+    def __init__(self, center, size_of_block, blocks, positions, offsets=None):
+        if offsets is None:
+            offsets = [(0, 0) for i in positions]
         self.blocks = blocks
         self.positions = positions
+        self.offsets = offsets
         self.group = pygame.sprite.Group()
         self.group.add(self.blocks)
         self.current_pos = 0
@@ -76,7 +95,9 @@ class Piece:
             b.rect.y = self.positions[self.current_pos][i][1] + self.center[1]
 
     def rotate(self):
+        self.center = sub2(self.center, self.offsets[self.current_pos])
         self.current_pos = (self.current_pos + 1) % len(self.positions)
+        self.center = sum2(self.center, self.offsets[self.current_pos])
         self.setBlocksPos()
         self.moveBackIfOutOfScreen()
 

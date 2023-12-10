@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 
 test_font = pygame.font.Font(None, 20)
 
-piece = pieces.zigR((60, 60), grid_s)
+piece = pieces.tPiece((60, 60), grid_s)
 
 while True:
     # draw our elements and update everything
