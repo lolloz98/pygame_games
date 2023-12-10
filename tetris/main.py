@@ -2,6 +2,7 @@ import pygame
 from sys import exit
 import pieces
 from tile_manager import TileManager
+import time
 
 # grid is 10x20
 width = 300
@@ -19,12 +20,13 @@ clock = pygame.time.Clock()
 test_font = pygame.font.Font(None, 20)
 die_font = pygame.font.Font(None, 50)
 
-piece: pieces.Piece
-tile_manager: TileManager
-score: int
-started: bool
-died: bool
-
+piece: pieces.Piece = None
+tile_manager: TileManager = None
+score: int = 0
+started: bool = False
+died: bool = False
+difficulty: int = 0
+next_score_for_inc: int = 0
 
 def reset():
     global piece
@@ -37,6 +39,10 @@ def reset():
     started = False
     global died
     died = False
+    global difficulty
+    difficulty = 5
+    global next_score_for_inc
+    next_score_for_inc = 10
 
 
 reset()
@@ -80,6 +86,9 @@ while True:
     if not died and piece.isCollided(tile_manager.group, height):
         piece.up()
         piece.setHasCollided()
+    if not died and started and next_score_for_inc < score:
+        difficulty += (score - next_score_for_inc) // 10 + 1
+        next_score_for_inc = (score // 10) * 10 + 10
 
     screen.fill('#000000')
     piece.draw(screen)
@@ -89,6 +98,7 @@ while True:
     screen.blit(text_surface, (int(width * 0.70), int(height * 0.03)))
     if died:
         screen.fill('#000000')
+        difficulty = 5
         died_surface = die_font.render('You Died!', False, '#FFFFFF')
         die_rect = died_surface.get_rect(midbottom=(int(width * 0.5), int(height * 0.5)))
         screen.blit(died_surface, die_rect)
@@ -96,4 +106,5 @@ while True:
         big_score_ret = died_surface.get_rect(midtop=(int(width * 0.5), int(height * 0.5)))
         screen.blit(big_score_surface, big_score_ret)
     pygame.display.update()
-    clock.tick(5)
+    # Here we use a "hack" to increase difficulty: we just increment the fps to increment it
+    clock.tick(difficulty)
