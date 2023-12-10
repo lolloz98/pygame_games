@@ -17,9 +17,21 @@ clock = pygame.time.Clock()
 
 test_font = pygame.font.Font(None, 20)
 
-piece = pieces.generateRandomPiece((60, 60), block_size)
-tile_manager = TileManager((width, height), block_size)
-score = 0
+piece: pieces.Piece
+tile_manager: TileManager
+score: int
+
+
+def reset():
+    global piece
+    piece = pieces.generateRandomPiece((60, 60), block_size)
+    global tile_manager
+    tile_manager = TileManager((width, height), block_size)
+    global score
+    score = 0
+
+
+reset()
 
 while True:
     # draw our elements and update everything
@@ -47,6 +59,10 @@ while True:
                 score += s * s
                 s = tile_manager.detectAndDeleteCompleteRows()
             piece = pieces.generateRandomPiece((60, 60), block_size)
+            if piece.isCollided(tile_manager.group, height):
+                # DEATH
+                reset()
+                pass
         else:
             piece.setHasCollided(False)
     if piece.isCollided(tile_manager.group, height):
