@@ -38,3 +38,11 @@ class MoveBackAndForth(Effect):
             self.dir.x = -self.dir.x
         if abs(self.moved.y) > self.stop.y:
             self.dir.y = -self.dir.y
+
+
+def moveBackAndForthX(vel=constants.moving_tile_vel[0], stop=(200, 200)):
+    return MoveBackAndForth((vel, 0), stop)
+
+
+def moveBackAndForthY(vel=constants.moving_tile_vel[1], stop=(200, 200)):
+    return MoveBackAndForth((0, vel), stop)
