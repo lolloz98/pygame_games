@@ -89,7 +89,7 @@ while True:
         die_rect = died_surface.get_rect(midbottom=(int(constants.screen_size[0] * 0.5), int(constants.screen_size[1] * 0.5)))
         screen.blit(died_surface, die_rect)
         big_score_surface = die_font.render('Score: ' + str(score), False, '#FFFFFF')
-        big_score_ret = died_surface.get_rect(midtop=(int(constants.screen_size[0] * 0.5), int(constants.screen_size[1] * 0.5)))
+        big_score_ret = big_score_surface.get_rect(midtop=(int(constants.screen_size[0] * 0.5), int(constants.screen_size[1] * 0.5)))
         screen.blit(big_score_surface, big_score_ret)
         pygame.display.update()
         clock.tick(constants.max_fps)
@@ -102,10 +102,14 @@ while True:
         diff = constants.lift_screen_height - dodo.rect.midbottom[1]
         dodo.rect.midbottom = (dodo.rect.midbottom[0], constants.lift_screen_height)
         tile_manager.push_down_tiles(diff)
+        score += diff
 
     tile_manager.draw(screen)
     dodo.draw(screen)
-    screen.blit(text_surface, (int(constants.screen_size[0] * 0.70), int(constants.screen_size[1] * 0.03)))
+    screen.blit(
+        text_surface,
+        text_surface.get_rect(topright=(int(constants.screen_size[0] * 0.9), int(constants.screen_size[1] * 0.03)))
+    )
 
     pygame.display.update()
     clock.tick(constants.max_fps)
