@@ -22,8 +22,8 @@ difficulty: int = 0
 next_score_for_inc: int = 0
 
 
-tile_manager = tile.TileManager()
-dodo = player.Player()
+tile_manager: tile.TileManager = None
+dodo: player.Player = None
 
 
 def reset():
@@ -35,8 +35,10 @@ def reset():
     died = False
     global difficulty
     difficulty = 5
-    global next_score_for_inc
-    next_score_for_inc = 10
+    global tile_manager
+    tile_manager = tile.TileManager()
+    global dodo
+    dodo = player.Player()
 
 
 reset()
@@ -79,6 +81,18 @@ while True:
 
     screen.fill('#000000')
     text_surface = test_font.render('Score: ' + str(score), False, '#FFFFFF')
+
+    if dodo.isDead():
+        died = True
+        died_surface = die_font.render('You Died!', False, '#FFFFFF')
+        die_rect = died_surface.get_rect(midbottom=(int(constants.screen_size[0] * 0.5), int(constants.screen_size[1] * 0.5)))
+        screen.blit(died_surface, die_rect)
+        big_score_surface = die_font.render('Score: ' + str(score), False, '#FFFFFF')
+        big_score_ret = died_surface.get_rect(midtop=(int(constants.screen_size[0] * 0.5), int(constants.screen_size[1] * 0.5)))
+        screen.blit(big_score_surface, big_score_ret)
+        pygame.display.update()
+        clock.tick(constants.max_fps)
+        continue
 
     dodo.moveX(dt)
     dodo.moveY(dt, tile_manager.group)

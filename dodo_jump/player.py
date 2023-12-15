@@ -2,6 +2,7 @@ import pygame
 import constants
 from enum import Enum
 
+
 class Dir(Enum):
     LEFT = -1
     RIGHT = 1
@@ -48,8 +49,12 @@ class Player(pygame.sprite.Sprite):
             if dir == self.x_dir:
                 self.x_dir = Dir.NONE
 
+    def isDead(self):
+        return self.rect.midtop[1] > constants.screen_size[1]
+
     def moveX(self, dt):
-        self.rect.midbottom = (self.rect.midbottom[0] + self.x_dir.value * constants.character_x_vel * dt, self.rect.midbottom[1])
+        self.rect.midbottom = (
+        self.rect.midbottom[0] + self.x_dir.value * constants.character_x_vel * dt, self.rect.midbottom[1])
         if self.rect.midleft[0] > constants.screen_size[0]:
             self.rect.midbottom = (0, self.rect.midbottom[1])
         if self.rect.midright[0] < 0:
