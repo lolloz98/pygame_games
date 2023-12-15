@@ -31,13 +31,22 @@ class MoveBackAndForth(Effect):
         movement = (self.dir.elementwise() * self.velocity).elementwise() * dt
         self.moved += movement.elementwise()
         obj.move(movement)
-        # bounce if on back
+
+        def back_on_stop(m, s):
+            if m < -s:
+                return -s + 0.01
+            if m > s:
+                return s - 0.01
+            return m
+
         if obj.rect.midright[0] > constants.screen_size[0] \
                 or obj.rect.midleft[0] < 0 \
                 or abs(self.moved.x) > self.stop.x:
             self.dir.x = -self.dir.x
+            self.moved.x = back_on_stop(self.moved.x, self.stop.x)
         if abs(self.moved.y) > self.stop.y:
             self.dir.y = -self.dir.y
+            self.moved.y = back_on_stop(self.moved.y, self.stop.y)
 
 
 def moveBackAndForthX(vel=constants.moving_tile_vel[0], stop=(200, 200)):
