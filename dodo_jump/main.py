@@ -30,7 +30,7 @@ def reset():
     global score
     score = 0
     global started
-    started = False
+    started = True
     global died
     died = False
     global difficulty
@@ -63,16 +63,17 @@ while True:
         if event.type == pygame.KEYDOWN:
             if died:
                 reset()
-            else:
+            elif not started:
                 started = True
-            if event.key == pygame.K_a:
-                dodo.changeInDir(player.Dir.LEFT, pygame.KEYDOWN)
-            if event.key == pygame.K_s:
-                pass
-            if event.key == pygame.K_d:
-                dodo.changeInDir(player.Dir.RIGHT, pygame.KEYDOWN)
-            if event.key == pygame.K_f:
-                pass
+            else:
+                if event.key == pygame.K_a:
+                    dodo.changeInDir(player.Dir.LEFT, pygame.KEYDOWN)
+                if event.key == pygame.K_s:
+                    pass
+                if event.key == pygame.K_d:
+                    dodo.changeInDir(player.Dir.RIGHT, pygame.KEYDOWN)
+                if event.key == pygame.K_f:
+                    pass
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
                 dodo.changeInDir(player.Dir.LEFT, pygame.KEYUP)
