@@ -10,8 +10,8 @@ class TileManager:
         self.group.add(self.tiles)
 
     def addTile(self, offset=10, type_of_tile=0):
-        self.tiles.append(self.tiles_type[type_of_tile](self.tiles[-1].position))
-        self.group.add(self.tiles[-1])
+        # todo
+        pass
 
     def draw(self, screen):
         self.group.draw(screen)
