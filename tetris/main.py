@@ -103,7 +103,7 @@ while True:
         die_rect = died_surface.get_rect(midbottom=(int(width * 0.5), int(height * 0.5)))
         screen.blit(died_surface, die_rect)
         big_score_surface = die_font.render('Score: ' + str(score), False, '#FFFFFF')
-        big_score_ret = died_surface.get_rect(midtop=(int(width * 0.5), int(height * 0.5)))
+        big_score_ret = big_score_surface.get_rect(midtop=(int(width * 0.5), int(height * 0.5)))
         screen.blit(big_score_surface, big_score_ret)
     pygame.display.update()
     # Here we use a "hack" to increase difficulty: we just increment the fps to increment it
