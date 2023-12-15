@@ -1,7 +1,7 @@
 import pygame
 from sys import exit
 import constants
-import tile
+import tile_manager
 import player
 import time
 
@@ -22,7 +22,7 @@ difficulty: int = 0
 next_score_for_inc: int = 0
 
 
-tile_manager: tile.TileManager = None
+tile_mng: tile_manager.TileManager = None
 dodo: player.Player = None
 
 
@@ -35,8 +35,8 @@ def reset():
     died = False
     global difficulty
     difficulty = 5
-    global tile_manager
-    tile_manager = tile.TileManager()
+    global tile_mng
+    tile_mng = tile_manager.TileManager()
     global dodo
     dodo = player.Player()
 
@@ -95,16 +95,16 @@ while True:
         clock.tick(constants.max_fps)
         continue
 
-    tile_manager.apply_effects_on_tiles(dt)
+    tile_mng.apply_effects_on_tiles(dt)
     dodo.moveX(dt)
-    dodo.moveY(dt, tile_manager.group)
+    dodo.moveY(dt, tile_mng.group)
     if dodo.rect.midbottom[1] < constants.lift_screen_height:
         diff = constants.lift_screen_height - dodo.rect.midbottom[1]
         dodo.rect.midbottom = (dodo.rect.midbottom[0], constants.lift_screen_height)
-        tile_manager.push_down_tiles(diff)
+        tile_mng.push_down_tiles(diff)
         score += diff
 
-    tile_manager.draw(screen)
+    tile_mng.draw(screen)
     dodo.draw(screen)
     screen.blit(
         text_surface,
