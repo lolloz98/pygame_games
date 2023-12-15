@@ -1,5 +1,5 @@
-from tile import *
 from pygame import Vector2
+from tile import *
 
 
 def level1(p: Vector2):
