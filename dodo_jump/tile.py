@@ -11,8 +11,8 @@ def movingAsCharOnX(position, color='Blue'):
     return Tile(position, effects.MoveXEffect(), color=color)
 
 
-def movingTileXY(position, color='Red', stop=(100, 100)):
-    return Tile(position, effects.MoveBackAndForth(stop=stop), color=color)
+def movingTileXY(position, color='Red', stop=(100, 100), vel=constants.moving_tile_vel):
+    return Tile(position, effects.MoveBackAndForth(vel, stop=stop), color=color)
 
 
 class Tile(pygame.sprite.Sprite):
