@@ -1,17 +1,14 @@
 import pygame
 from sys import exit
+import constants
+import tile
+import player
 import time
-
-# grid is 10x20
-width = 300
-height = 600
-block_size = (30, 30)
-spawn_point = ((width // (block_size[0] * 2)) * block_size[0], int(0.05 * height // block_size[1]) * block_size[1])
 
 pygame.init()
 
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Tetris')
+screen = pygame.display.set_mode(constants.screen_size)
+pygame.display.set_caption('Dodo Game')
 # To control the max frame rate:
 clock = pygame.time.Clock()
 
@@ -23,6 +20,10 @@ started: bool = False
 died: bool = False
 difficulty: int = 0
 next_score_for_inc: int = 0
+
+
+tile_manager = tile.TileManager()
+dodo = player.Player()
 
 
 def reset():
@@ -40,7 +41,18 @@ def reset():
 
 reset()
 
+# We make this project to be fps independent
+last_time = time.time()
 while True:
+    tmp = time.time()
+    dt = tmp - last_time
+    last_time = tmp
+
+    if dt > 3 / constants.max_fps:
+        # if dt gets too large the steps of character becomes too large and we might get
+        # weird behaviour
+        continue
+
     # draw our elements and update everything
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -63,7 +75,11 @@ while True:
     screen.fill('#000000')
     text_surface = test_font.render('Score: ' + str(score), False, '#FFFFFF')
 
-    screen.blit(text_surface, (int(width * 0.70), int(height * 0.03)))
+    dodo.moveY(dt, tile_manager.group)
+
+    tile_manager.draw(screen)
+    dodo.draw(screen)
+    screen.blit(text_surface, (int(constants.screen_size[0] * 0.70), int(constants.screen_size[1] * 0.03)))
 
     pygame.display.update()
-    clock.tick(5)
+    clock.tick(constants.max_fps)
