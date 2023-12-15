@@ -30,10 +30,11 @@ class Player(pygame.sprite.Sprite):
         # only one tile max in hits
         if hits and self.curr_velocity_y >= 0:
             for hit in hits:
-                self.rect.midbottom = (self.rect.midbottom[0], hit.rect.y)
-                self.curr_velocity_y = -constants.jump_force
-        else:
-            self.rect.y += self.curr_velocity_y * dt
+                if hit.rect.midtop[1] >= self.rect.center[1]:
+                    self.rect.midbottom = (self.rect.midbottom[0], hit.rect.y)
+                    self.curr_velocity_y = -constants.jump_force
+
+        self.rect.y += self.curr_velocity_y * dt
 
     def changeInDir(self, dir, pygameEvent):
         if pygameEvent == pygame.KEYDOWN:
