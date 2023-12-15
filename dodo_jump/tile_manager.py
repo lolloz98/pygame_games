@@ -17,14 +17,14 @@ class TileManager:
         self.group.draw(screen)
 
     def push_down_tiles(self, diff):
-        torem = False
+        torem = 0
         for t in self.tiles:
             ny = t.rect.midtop[1] + diff
             t.rect.midtop = (t.rect.midtop[0], ny)
             if ny > constants.screen_size[1] + constants.tile_offset_to_die:
-                torem = True
+                torem += 1
 
-        if torem:
+        for i in range(torem):
             self.tiles.pop(0)
 
     def apply_effects_on_tiles(self, dt):
