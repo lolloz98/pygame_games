@@ -94,6 +94,7 @@ while True:
         clock.tick(constants.max_fps)
         continue
 
+    tile_manager.apply_effects_on_tiles(dt)
     dodo.moveX(dt)
     dodo.moveY(dt, tile_manager.group)
     if dodo.rect.midbottom[1] < constants.lift_screen_height:

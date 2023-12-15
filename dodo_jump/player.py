@@ -1,12 +1,6 @@
 import pygame
 import constants
-from enum import Enum
-
-
-class Dir(Enum):
-    LEFT = -1
-    RIGHT = 1
-    NONE = 0
+from constants import Dir
 
 
 class Player(pygame.sprite.Sprite):

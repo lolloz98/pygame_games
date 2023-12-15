@@ -1,3 +1,5 @@
+from enum import Enum
+
 screen_size = (300, 600)
 
 tile_basic_size = (50, 10)
@@ -13,4 +15,13 @@ gravity = 1000
 max_fps = 60
 
 lift_screen_height = 400
+
+moving_tile_vel = (100, 100)
+tile_offset_to_die = 400
+
+
+class Dir(Enum):
+    LEFT = -1
+    RIGHT = 1
+    NONE = 0
 
