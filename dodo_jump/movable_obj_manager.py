@@ -1,20 +1,20 @@
 from levels import *
 
 
-class TileManager:
+class MovableObjectsManager:
     def __init__(self):
         # self.tiles = [normalTile((150, 550)), movingTileXY((150, 350)), jumpingTile((150, 150))]
         self.tiles = level1(pygame.Vector2(0, 0))
         self.tiles_type = [Tile]
-        self.group = pygame.sprite.Group()
-        self.group.add(self.tiles)
+        self.tile_group = pygame.sprite.Group()
+        self.tile_group.add(self.tiles)
 
     def addTile(self, offset=10, type_of_tile=0):
         # todo
         pass
 
     def draw(self, screen):
-        self.group.draw(screen)
+        self.tile_group.draw(screen)
 
     def push_down_tiles(self, diff):
         torem = 0
