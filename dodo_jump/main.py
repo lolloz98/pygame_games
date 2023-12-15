@@ -64,17 +64,23 @@ while True:
             else:
                 started = True
             if event.key == pygame.K_a:
-                pass
+                dodo.changeInDir(player.Dir.LEFT, pygame.KEYDOWN)
             if event.key == pygame.K_s:
                 pass
             if event.key == pygame.K_d:
-                pass
+                dodo.changeInDir(player.Dir.RIGHT, pygame.KEYDOWN)
             if event.key == pygame.K_f:
                 pass
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_a:
+                dodo.changeInDir(player.Dir.LEFT, pygame.KEYUP)
+            if event.key == pygame.K_d:
+                dodo.changeInDir(player.Dir.RIGHT, pygame.KEYUP)
 
     screen.fill('#000000')
     text_surface = test_font.render('Score: ' + str(score), False, '#FFFFFF')
 
+    dodo.moveX(dt)
     dodo.moveY(dt, tile_manager.group)
     if dodo.rect.midbottom[1] < constants.lift_screen_height:
         diff = constants.lift_screen_height - dodo.rect.midbottom[1]
