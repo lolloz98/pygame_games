@@ -53,6 +53,8 @@ class Player(pygame.sprite.Sprite):
         return self.rect.midtop[1] > constants.screen_size[1]
 
     def moveX(self, dt):
+        # For sure there is a better way to handle movement...
+        # For now it's good enough :)
         self.rect.midbottom = (
         self.rect.midbottom[0] + self.x_dir.value * constants.character_x_vel * dt, self.rect.midbottom[1])
         if self.rect.midleft[0] > constants.screen_size[0]:
