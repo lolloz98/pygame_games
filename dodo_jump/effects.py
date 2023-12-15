@@ -21,8 +21,8 @@ class MoveXEffect(Effect):
 
 
 class MoveBackAndForth(Effect):
-    def __init__(self, vel=constants.moving_tile_vel, stop=(200, 200)):
-        self.dir = pygame.Vector2((1, -1))
+    def __init__(self, vel=constants.moving_tile_vel, stop=(200, 200), init_dir=(1, -1)):
+        self.dir = pygame.Vector2(init_dir)
         self.velocity = pygame.Vector2(vel)
         self.stop = pygame.Vector2(stop)
         self.moved = pygame.Vector2(0, 0)
@@ -46,3 +46,11 @@ def moveBackAndForthX(vel=constants.moving_tile_vel[0], stop=(200, 200)):
 
 def moveBackAndForthY(vel=constants.moving_tile_vel[1], stop=(200, 200)):
     return MoveBackAndForth((0, vel), stop)
+
+
+class JumpHighEffect(Effect):
+    def __init__(self, jump=constants.jump_force):
+        self.jump = jump
+
+    def applyEffectToPlayer(self, character: player.Player):
+        character.curr_velocity_y -= self.jump

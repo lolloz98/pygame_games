@@ -15,6 +15,10 @@ def movingTileXY(position, color='Red', stop=(100, 100), vel=constants.moving_ti
     return Tile(position, effects.MoveBackAndForth(vel, stop=stop), color=color)
 
 
+def jumpingTile(position, color='Grey'):
+    return Tile(position, effects.JumpHighEffect(), color=color)
+
+
 class Tile(pygame.sprite.Sprite):
     def __init__(self, position, effect=effects.Effect(), dimensions=constants.tile_basic_size, color=constants.tile_basic_color):
         super().__init__()
@@ -34,11 +38,9 @@ class Tile(pygame.sprite.Sprite):
         )
 
 
-
-
 class TileManager:
     def __init__(self):
-        self.tiles = [normalTile((150, 550)), movingTileXY((150, 350)), movingAsCharOnX((150, 150))]
+        self.tiles = [normalTile((150, 550)), movingTileXY((150, 350)), jumpingTile((150, 150))]
         self.tiles_type = [Tile]
         self.group = pygame.sprite.Group()
         self.group.add(self.tiles)
