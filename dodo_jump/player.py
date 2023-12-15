@@ -32,4 +32,3 @@ class Player(pygame.sprite.Sprite):
                 self.curr_velocity_y = -constants.jump_force
         else:
             self.rect.y += self.curr_velocity_y * dt
-        print(self.curr_velocity_y)

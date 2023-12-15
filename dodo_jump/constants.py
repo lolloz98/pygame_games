@@ -11,3 +11,5 @@ character_color = '#FFFF00'
 gravity = 1000
 max_fps = 60
 
+lift_screen_height = 450
+

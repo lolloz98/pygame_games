@@ -76,6 +76,10 @@ while True:
     text_surface = test_font.render('Score: ' + str(score), False, '#FFFFFF')
 
     dodo.moveY(dt, tile_manager.group)
+    if dodo.rect.midbottom[1] < constants.lift_screen_height:
+        diff = constants.lift_screen_height - dodo.rect.midbottom[1]
+        dodo.rect.midbottom = (dodo.rect.midbottom[0], constants.lift_screen_height)
+        tile_manager.push_down_tiles(diff)
 
     tile_manager.draw(screen)
     dodo.draw(screen)

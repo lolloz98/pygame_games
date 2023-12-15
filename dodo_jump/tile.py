@@ -13,7 +13,7 @@ class Tile(pygame.sprite.Sprite):
 
 class TileManager:
     def __init__(self):
-        self.tiles = [Tile((150, 550)), Tile((150, 450))]
+        self.tiles = [Tile((150, 550)), Tile((150, 450)), Tile((150, 350))]
         self.tiles_type = [Tile]
         self.group = pygame.sprite.Group()
         self.group.add(self.tiles)
@@ -22,10 +22,16 @@ class TileManager:
         self.tiles.append(self.tiles_type[type_of_tile](self.tiles[-1].position))
         self.group.add(self.tiles[-1])
 
-    def recycleTile(self):
-        # here we can either recycle or throw away and create a new tile
-        self.tiles.pop(0)
-        # todo
-
     def draw(self, screen):
         self.group.draw(screen)
+
+    def push_down_tiles(self, diff):
+        torem = False
+        for t in self.tiles:
+            ny = t.rect.midtop[1] + diff
+            t.rect.midtop = (t.rect.midtop[0], ny)
+            if ny > constants.screen_size[1]:
+                torem = True
+
+        if torem:
+            self.tiles.pop(0)
