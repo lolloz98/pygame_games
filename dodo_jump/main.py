@@ -102,8 +102,8 @@ while True:
     if dodo.rect.midbottom[1] < constants.lift_screen_height:
         diff = constants.lift_screen_height - dodo.rect.midbottom[1]
         dodo.rect.midbottom = (dodo.rect.midbottom[0], constants.lift_screen_height)
-        obj_manager.push_down_tiles(diff)
         score += diff
+        obj_manager.push_down_tiles(diff, score)
 
     obj_manager.draw(screen)
     dodo.draw(screen)

@@ -152,7 +152,8 @@ levelTypes = [
 ]
 
 
-def appendLevel(objs, group_collider):
+def appendLevel(objs, group_collider, score):
+    # todo use score to select difficulty of level based on score
     if len(objs) == 0:
         lev = random.choice(levelTypes)(630)
     else:

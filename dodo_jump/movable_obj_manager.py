@@ -20,12 +20,12 @@ class MovableObjectsManager:
     def draw(self, screen):
         self.group.draw(screen)
 
-    def appendLevels(self):
+    def appendLevels(self, score):
         while len(self.objs) == 0 or self.objs[-1].rect.midtop[1] > 0:
-            appendLevel(self.objs, self.group)
+            appendLevel(self.objs, self.group, score)
         print(len(self.group))
 
-    def push_down_tiles(self, diff):
+    def push_down_tiles(self, diff, score):
         torem = []
         for t in self.objs:
             ny = t.rect.midtop[1] + diff
@@ -36,7 +36,7 @@ class MovableObjectsManager:
         for t in torem:
             self.remove(t)
 
-        self.appendLevels()
+        self.appendLevels(score)
 
     def apply_effects_on_tiles(self, dt):
         for tile in self.objs:
