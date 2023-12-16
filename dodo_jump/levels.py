@@ -62,21 +62,66 @@ def level3(lastY):
 def level4(lastY):
     stopy = 60
     distOfTileFromPrev = [
+        -80,
         -80 - stopy,
         0,
-        -200,
+        -180,
         -100,
         -100,
         -120
     ]
     absY = getAbsPos(lastY, distOfTileFromPrev)
     return [
-        movingTileXY(Vector2(50, absY[0]), stop=(0, stopy), vel=(0, constants.moving_tile_vel[1])),
-        movingTileXY(Vector2(constants.screen_size[0] - 50, absY[1]), stop=(0, stopy), vel=(0, constants.moving_tile_vel[1])),
-        normalTile(Vector2(150, absY[2])),
-        normalTile(Vector2(40, absY[3])),
-        normalTile(Vector2(230, absY[4])),
-        normalTile(Vector2(60, absY[5])),
+        normalTile(Vector2(150, absY[0])),
+        movingTileXY(Vector2(50, absY[1]), stop=(0, stopy), vel=(0, constants.moving_tile_vel[1])),
+        movingTileXY(Vector2(constants.screen_size[0] - 50, absY[2]), stop=(0, stopy), vel=(0, constants.moving_tile_vel[1])),
+        normalTile(Vector2(150, absY[3])),
+        normalTile(Vector2(40, absY[4])),
+        normalTile(Vector2(230, absY[5])),
+        normalTile(Vector2(60, absY[6])),
+    ]
+
+
+def level5(lastY):
+    distOfTileFromPrev = [
+        -80,
+        -440,
+        -440,
+        -440,
+        -100,
+        -120
+    ]
+    absY = getAbsPos(lastY, distOfTileFromPrev)
+    return [
+        jumpingTile(Vector2(50, absY[0])),
+        jumpingTile(Vector2(constants.screen_size[0] - 50, absY[1])),
+        jumpingTile(Vector2(50, absY[2])),
+        normalTile(Vector2(constants.screen_size[0] - 50, absY[3])),
+        disappearingTile(Vector2(230, absY[4])),
+        disappearingTile(Vector2(60, absY[5])),
+    ]
+
+
+def level6(lastY):
+    stopy = 60
+    distOfTileFromPrev = [
+        -80,
+        -80 - stopy,
+        0,
+        -155,
+        -100,
+        -100,
+        -120
+    ]
+    absY = getAbsPos(lastY, distOfTileFromPrev)
+    return [
+        normalTile(Vector2(150, absY[0])),
+        movingTileXY(Vector2(50, absY[1]), stop=(0, stopy), vel=(0, constants.moving_tile_vel[1])),
+        movingTileXY(Vector2(constants.screen_size[0] - 50, absY[2]), stop=(0, stopy), vel=(0, constants.moving_tile_vel[1])),
+        basicEnemy(Vector2(150, absY[3])),
+        normalTile(Vector2(40, absY[4])),
+        basicEnemy(Vector2(230, absY[5])),
+        normalTile(Vector2(60, absY[6])),
     ]
 
 
@@ -94,6 +139,6 @@ def appendLevel(objs, group_collider):
     if len(objs) == 0:
         lev = level1(630)
     else:
-        lev = level4(objs[-1].rect.midbottom[1])
+        lev = level6(objs[-1].rect.midbottom[1])
     objs += lev
     group_collider.add(lev)
