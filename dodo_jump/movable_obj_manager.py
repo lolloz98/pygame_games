@@ -5,9 +5,10 @@ import pygame
 class MovableObjectsManager:
     def __init__(self):
         # self.tiles = [normalTile((150, 550)), movingTileXY((150, 350)), jumpingTile((150, 150))]
-        self.objs = level2(pygame.Vector2(0, 0))
+        self.objs = []
         self.group = pygame.sprite.Group()
-        self.group.add(self.objs)
+        appendLevel(self.objs, self.group)
+        appendLevel(self.objs, self.group)
 
     def remove(self, movable_obj: MovableSprite):
         self.objs.remove(movable_obj)

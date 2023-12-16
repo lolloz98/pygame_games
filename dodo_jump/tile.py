@@ -19,6 +19,6 @@ def jumpingTile(position, color='Grey'):
     return MovableSprite(position, effects.JumpHighEffect(), color=color)
 
 
-
-
+def disappearingTile(position, color='White'):
+    return MovableSprite(position, effects.DisappearingObj(), color=color)
 

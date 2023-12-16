@@ -73,10 +73,14 @@ class JumpHighEffect(Effect):
         character.curr_velocity_y -= self.jump
 
 
-class BasicEnemy(Effect):
+class DisappearingObj(Effect):
     def applyEffectToPlayerOnTop(self, character: player.Player):
         self.disappear = True
 
+
+class BasicEnemy(DisappearingObj):
     def applyEffectToPlayerOnBottom(self, character: player.Player):
         character.die()
+
+
 
