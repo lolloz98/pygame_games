@@ -18,23 +18,35 @@ class Player(pygame.sprite.Sprite):
         self.group.add(self)
         self.curr_velocity_y = 0
         self.x_dir = Dir.NONE
+        self.last_y_move = 0
 
     def draw(self, screen):
         self.group.draw(screen)
 
     # v = v0 + gt
     def moveY(self, dt, collider_group, *, gravity=constants.gravity):
-        self.curr_velocity_y += gravity * dt
         hits = pygame.sprite.groupcollide(collider_group, self.group, False, False)
 
+        def moveDown():
+            self.curr_velocity_y += gravity * dt
+            self.last_y_move = self.curr_velocity_y * dt
+            self.rect.y += self.last_y_move
+        if not hits:
+            moveDown()
+            return
+
         # only one tile max in hits
-        if hits and self.curr_velocity_y >= 0:
+        if self.curr_velocity_y >= 0:
             for hit in hits:
-                if hit.rect.midtop[1] >= self.rect.center[1]:
+                # in previous position the object has to be under the player
+                if hit.rect.midbottom[1] >= self.rect.midbottom[1] - self.last_y_move:
                     self.rect.midbottom = (self.rect.midbottom[0], hit.rect.y)
                     self.curr_velocity_y = -constants.jump_force
+                    self.last_y_move = 0
                     hit.effect.applyEffectToPlayer(self)
-        self.rect.y += self.curr_velocity_y * dt
+                    return
+
+        moveDown()
 
     def changeInDir(self, dir, pygameEvent):
         if pygameEvent == pygame.KEYDOWN:
