@@ -8,6 +8,9 @@ import time
 pygame.init()
 
 screen = pygame.display.set_mode(constants.screen_size)
+background = pygame.Surface.convert_alpha(pygame.image.load(constants.background_img))
+background_rect = background.get_rect(topleft=(0, 0))
+
 pygame.display.set_caption('Dodo Game')
 # To control the max frame rate:
 clock = pygame.time.Clock()
@@ -80,7 +83,7 @@ while True:
             if event.key == pygame.K_d:
                 dodo.changeInDir(player.Dir.RIGHT, pygame.KEYUP)
 
-    screen.fill('#000000')
+    screen.blit(background, background_rect)
     text_surface = test_font.render('Score: ' + str(score), False, '#FFFFFF')
 
     if dodo.isDead():

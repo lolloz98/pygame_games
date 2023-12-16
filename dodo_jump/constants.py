@@ -1,6 +1,7 @@
 from enum import Enum
 
 screen_size = (300, 600)
+background_img = './assets/background.png'
 
 tile_basic_size = (50, 10)
 tile_basic_color = '#00FF00'
