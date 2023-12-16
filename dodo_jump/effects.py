@@ -4,6 +4,9 @@ import pygame
 
 
 class Effect:
+    def __init__(self):
+        self.disappear = False
+
     def applyEffectToPlayerOnBottom(self, character: player.Player):
         pass
 
@@ -25,6 +28,7 @@ class MoveXEffect(Effect):
 
 class MoveBackAndForth(Effect):
     def __init__(self, vel=constants.moving_tile_vel, stop=(200, 200), init_dir=(1, -1)):
+        super().__init__()
         self.dir = pygame.Vector2(init_dir)
         self.velocity = pygame.Vector2(vel)
         self.stop = pygame.Vector2(stop)
@@ -62,6 +66,7 @@ def moveBackAndForthY(vel=constants.moving_tile_vel[1], stop=(200, 200)):
 
 class JumpHighEffect(Effect):
     def __init__(self, jump=constants.jump_force):
+        super().__init__()
         self.jump = jump
 
     def applyEffectToPlayerOnTop(self, character: player.Player):
@@ -69,6 +74,9 @@ class JumpHighEffect(Effect):
 
 
 class BasicEnemy(Effect):
+    def applyEffectToPlayerOnTop(self, character: player.Player):
+        self.disappear = True
+
     def applyEffectToPlayerOnBottom(self, character: player.Player):
         character.die()
 

@@ -24,8 +24,8 @@ class Player(pygame.sprite.Sprite):
     def draw(self, screen):
         self.group.draw(screen)
 
-    def checkCollisions(self, collider_group):
-        hits = pygame.sprite.groupcollide(collider_group, self.group, False, False)
+    def checkCollisions(self, obj_manager):
+        hits = pygame.sprite.groupcollide(obj_manager.group, self.group, False, False)
         for hit in hits:
             prev_rect = self.image.get_rect(midbottom=self.prev_pos)
             if self.curr_velocity_y >= 0 and hit.rect.midright[1] >= prev_rect.midbottom[1]:
@@ -33,6 +33,8 @@ class Player(pygame.sprite.Sprite):
                 hit.effect.applyEffectToPlayerOnTop(self)
             elif not prev_rect.colliderect(hit.rect):
                 hit.effect.applyEffectToPlayerOnBottom(self)
+            if hit.effect.disappear:
+                obj_manager.remove(hit)
 
     # v = v0 + gt
     def moveY(self, dt, *, gravity=constants.gravity):
