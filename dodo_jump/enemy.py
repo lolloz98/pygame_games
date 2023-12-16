@@ -3,6 +3,6 @@ from movable_sprite import MovableSprite
 import constants
 
 
-def basicEnemy(position, dimensions=constants.basic_enemy_dims, color='Red'):
-    return MovableSprite(position, effects.BasicEnemy(), dimensions, color)
+def basicEnemy(position, filename=constants.wind):
+    return MovableSprite(position, effects.BasicEnemy(), filename)
 

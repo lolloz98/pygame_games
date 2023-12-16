@@ -8,14 +8,13 @@ class MovableSprite(pygame.sprite.Sprite):
             self,
             position,
             effect=effects.Effect(),
-            dimensions=constants.tile_basic_size,
-            color=constants.tile_basic_color
+            filename=constants.normal_tile
     ):
         super().__init__()
-        self.image = pygame.Surface(dimensions)
+        img = pygame.image.load(filename)
+        self.image = pygame.Surface.convert_alpha(img)
         self.rect = self.image.get_rect(midtop=position)
         self.effect = effect
-        self.image.fill(color)
         self.effect.init_pos = pygame.Vector2(position)
 
     def move(self, direction, dt=1):

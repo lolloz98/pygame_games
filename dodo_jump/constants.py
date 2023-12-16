@@ -20,8 +20,15 @@ lift_screen_height = 400
 
 moving_tile_vel = (100, 100)
 tile_offset_to_die = 400
+normal_tile = './assets/normal_tile.png'
+disappearing_tile = './assets/disappearing_tile.png'
+jump_tile = './assets/jump_tile.png'
+move_xy_tile = './assets/move_xy_tile.png'
+move_x_tile = './assets/move_x_tile.png'
+
 
 basic_enemy_dims = (40, 40)
+wind = './assets/wind.png'
 
 
 class Dir(Enum):
