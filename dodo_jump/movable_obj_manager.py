@@ -22,15 +22,15 @@ class MovableObjectsManager:
         self.group.draw(screen)
 
     def push_down_tiles(self, diff):
-        torem = 0
+        torem = []
         for t in self.objs:
             ny = t.rect.midtop[1] + diff
             t.rect.midtop = (t.rect.midtop[0], ny)
             if ny > constants.screen_size[1] + constants.tile_offset_to_die:
-                torem += 1
+                torem.append(t)
 
-        for i in range(torem):
-            self.objs.pop(0)
+        for t in torem:
+            self.remove(t)
 
     def apply_effects_on_tiles(self, dt):
         for tile in self.objs:
