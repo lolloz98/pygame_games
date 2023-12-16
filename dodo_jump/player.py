@@ -18,7 +18,8 @@ class Player(pygame.sprite.Sprite):
         self.group.add(self)
         self.curr_velocity_y = 0
         self.x_dir = Dir.NONE
-        self.last_y_move = 0
+        self.prev_pos = pygame.Vector2(position)
+        self.hasDied = False
 
     def draw(self, screen):
         self.group.draw(screen)
@@ -27,26 +28,33 @@ class Player(pygame.sprite.Sprite):
     def moveY(self, dt, collider_group, *, gravity=constants.gravity):
         hits = pygame.sprite.groupcollide(collider_group, self.group, False, False)
 
-        def moveDown():
+        def actuallyMoveY():
+            self.prev_pos[1] = self.rect.midbottom[1]
             self.curr_velocity_y += gravity * dt
-            self.last_y_move = self.curr_velocity_y * dt
-            self.rect.y += self.last_y_move
+            self.rect.y += self.curr_velocity_y * dt
         if not hits:
-            moveDown()
+            actuallyMoveY()
             return
 
-        # only one tile max in hits
+        # only one object max in hits
         if self.curr_velocity_y >= 0:
             for hit in hits:
-                # in previous position the object has to be under the player
-                if hit.rect.midbottom[1] >= self.rect.midbottom[1] - self.last_y_move:
-                    self.rect.midbottom = (self.rect.midbottom[0], hit.rect.y)
-                    self.curr_velocity_y = -constants.jump_force
-                    self.last_y_move = 0
-                    hit.effect.applyEffectToPlayer(self)
-                    return
+                # act only if prev was below player and was not already hit
+                prev_pos_rect = self.image.get_rect(midbottom=self.prev_pos)
 
-        moveDown()
+                if not prev_pos_rect.colliderect(hit.rect):
+                    if self.rect.midbottom[1] > hit.rect.midbottom[1]:
+                        hit.effect.applyEffectToPlayerOnBottom(self)
+                        return
+                    # self.rect.midbottom = (self.rect.midbottom[0], hit.rect.y)
+                    self.curr_velocity_y = -constants.jump_force
+                    hit.effect.applyEffectToPlayerOnTop(self)
+        else:
+            for hit in hits:
+                if self.rect.midbottom[1] > hit.rect.midbottom[1]:
+                    hit.effect.applyEffectToPlayerOnBottom(self)
+
+        actuallyMoveY()
 
     def changeInDir(self, dir, pygameEvent):
         if pygameEvent == pygame.KEYDOWN:
@@ -57,9 +65,10 @@ class Player(pygame.sprite.Sprite):
                 self.x_dir = Dir.NONE
 
     def isDead(self):
-        return self.rect.midtop[1] > constants.screen_size[1]
+        return self.hasDied or self.rect.midtop[1] > constants.screen_size[1]
 
     def moveX(self, dt):
+        self.prev_pos[0] = self.rect.midbottom[0]
         # For sure there is a better way to handle movement...
         # For now it's good enough :)
         self.rect.midbottom = (
@@ -68,3 +77,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.midbottom = (0, self.rect.midbottom[1])
         if self.rect.midright[0] < 0:
             self.rect.midbottom = (constants.screen_size[0], self.rect.midbottom[1])
+
+    def die(self):
+        self.hasDied = True

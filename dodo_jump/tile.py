@@ -11,7 +11,7 @@ def movingAsCharOnX(position, color='Blue'):
     return MovableSprite(position, effects.MoveXEffect(), color=color)
 
 
-def movingTileXY(position, color='Red', stop=(100, 100), vel=constants.moving_tile_vel):
+def movingTileXY(position, color='Purple', stop=(100, 100), vel=constants.moving_tile_vel):
     return MovableSprite(position, effects.MoveBackAndForth(vel, stop=stop), color=color)
 
 

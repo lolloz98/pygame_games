@@ -4,7 +4,10 @@ import pygame
 
 
 class Effect:
-    def applyEffectToPlayer(self, character: player.Player):
+    def applyEffectToPlayerOnBottom(self, character: player.Player):
+        pass
+
+    def applyEffectToPlayerOnTop(self, character: player.Player):
         pass
 
     def applyEffectToTile(self, obj, dt):
@@ -61,5 +64,11 @@ class JumpHighEffect(Effect):
     def __init__(self, jump=constants.jump_force):
         self.jump = jump
 
-    def applyEffectToPlayer(self, character: player.Player):
+    def applyEffectToPlayerOnTop(self, character: player.Player):
         character.curr_velocity_y -= self.jump
+
+
+class BasicEnemy(Effect):
+    def applyEffectToPlayerOnBottom(self, character: player.Player):
+        character.die()
+

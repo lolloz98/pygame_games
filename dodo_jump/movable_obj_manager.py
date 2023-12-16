@@ -5,7 +5,7 @@ import pygame
 class MovableObjectsManager:
     def __init__(self):
         # self.tiles = [normalTile((150, 550)), movingTileXY((150, 350)), jumpingTile((150, 150))]
-        self.tiles = level1(pygame.Vector2(0, 0))
+        self.tiles = level2(pygame.Vector2(0, 0))
         self.tiles_type = [MovableSprite]
         self.tile_group = pygame.sprite.Group()
         self.tile_group.add(self.tiles)

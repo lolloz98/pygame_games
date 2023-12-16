@@ -19,6 +19,8 @@ lift_screen_height = 400
 moving_tile_vel = (100, 100)
 tile_offset_to_die = 400
 
+basic_enemy_dims = (40, 40)
+
 
 class Dir(Enum):
     LEFT = -1
