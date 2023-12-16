@@ -7,7 +7,7 @@ class MovableObjectsManager:
         # self.tiles = [normalTile((150, 550)), movingTileXY((150, 350)), jumpingTile((150, 150))]
         self.objs = []
         self.group = pygame.sprite.Group()
-        self.appendLevels()
+        self.appendLevels(0)
 
     def remove(self, movable_obj: MovableSprite):
         self.objs.remove(movable_obj)
@@ -23,7 +23,6 @@ class MovableObjectsManager:
     def appendLevels(self, score):
         while len(self.objs) == 0 or self.objs[-1].rect.midtop[1] > 0:
             appendLevel(self.objs, self.group, score)
-        print(len(self.group))
 
     def push_down_tiles(self, diff, score):
         torem = []

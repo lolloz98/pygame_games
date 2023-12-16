@@ -7,12 +7,12 @@ class Player(pygame.sprite.Sprite):
     def __init__(
             self,
             position=constants.character_init_pos,
-            dimensions=constants.character_size,
-            color=constants.character_color
+            filename=constants.character_image
     ):
         super().__init__()
-        self.image = pygame.Surface(dimensions)
-        self.image.fill(color)
+        img = pygame.image.load(filename)
+        self.image = pygame.Surface.convert_alpha(img)
+        # self.image.fill(color)
         self.rect = self.image.get_rect(midbottom=position)
         self.group = pygame.sprite.GroupSingle()
         self.group.add(self)

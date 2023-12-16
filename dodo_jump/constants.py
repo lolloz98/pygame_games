@@ -10,6 +10,7 @@ jump_force = 550
 character_init_pos = (150, 500)
 character_color = '#FFFF00'
 character_x_vel = 300
+character_image = './assets/dodo.png'
 
 gravity = 1000
 max_fps = 60
