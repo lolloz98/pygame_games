@@ -97,7 +97,8 @@ while True:
 
     obj_manager.apply_effects_on_tiles(dt)
     dodo.moveX(dt)
-    dodo.moveY(dt, obj_manager.tile_group)
+    dodo.moveY(dt)
+    dodo.checkCollisions(obj_manager.tile_group)
     if dodo.rect.midbottom[1] < constants.lift_screen_height:
         diff = constants.lift_screen_height - dodo.rect.midbottom[1]
         dodo.rect.midbottom = (dodo.rect.midbottom[0], constants.lift_screen_height)

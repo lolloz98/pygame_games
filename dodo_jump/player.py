@@ -24,37 +24,21 @@ class Player(pygame.sprite.Sprite):
     def draw(self, screen):
         self.group.draw(screen)
 
-    # v = v0 + gt
-    def moveY(self, dt, collider_group, *, gravity=constants.gravity):
+    def checkCollisions(self, collider_group):
         hits = pygame.sprite.groupcollide(collider_group, self.group, False, False)
+        for hit in hits:
+            prev_rect = self.image.get_rect(midbottom=self.prev_pos)
+            if self.curr_velocity_y >= 0 and hit.rect.midright[1] >= prev_rect.midbottom[1]:
+                self.curr_velocity_y = -constants.jump_force
+                hit.effect.applyEffectToPlayerOnTop(self)
+            elif not prev_rect.colliderect(hit.rect):
+                hit.effect.applyEffectToPlayerOnBottom(self)
 
-        def actuallyMoveY():
-            self.prev_pos[1] = self.rect.midbottom[1]
-            self.curr_velocity_y += gravity * dt
-            self.rect.y += self.curr_velocity_y * dt
-        if not hits:
-            actuallyMoveY()
-            return
-
-        # only one object max in hits
-        if self.curr_velocity_y >= 0:
-            for hit in hits:
-                # act only if prev was below player and was not already hit
-                prev_pos_rect = self.image.get_rect(midbottom=self.prev_pos)
-
-                if not prev_pos_rect.colliderect(hit.rect):
-                    if self.rect.midbottom[1] > hit.rect.midbottom[1]:
-                        hit.effect.applyEffectToPlayerOnBottom(self)
-                        return
-                    # self.rect.midbottom = (self.rect.midbottom[0], hit.rect.y)
-                    self.curr_velocity_y = -constants.jump_force
-                    hit.effect.applyEffectToPlayerOnTop(self)
-        else:
-            for hit in hits:
-                if self.rect.midbottom[1] > hit.rect.midbottom[1]:
-                    hit.effect.applyEffectToPlayerOnBottom(self)
-
-        actuallyMoveY()
+    # v = v0 + gt
+    def moveY(self, dt, *, gravity=constants.gravity):
+        self.prev_pos[1] = self.rect.midbottom[1]
+        self.curr_velocity_y += gravity * dt
+        self.rect.y += self.curr_velocity_y * dt
 
     def changeInDir(self, dir, pygameEvent):
         if pygameEvent == pygame.KEYDOWN:
