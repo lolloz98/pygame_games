@@ -1,6 +1,7 @@
 from pygame import Vector2
 from tile import *
 from enemy import *
+import random
 
 
 def level1(lastY):
@@ -24,6 +25,7 @@ def level1(lastY):
 def level2(lastY):
     distOfTileFromPrev = [
         -80,
+        -90,
         0,
         -140,
         -100,
@@ -32,18 +34,20 @@ def level2(lastY):
     ]
     absY = getAbsPos(lastY, distOfTileFromPrev)
     return [
-        normalTile(Vector2(50, absY[0])),
-        normalTile(Vector2(constants.screen_size[0] - 50, absY[1])),
-        normalTile(Vector2(150, absY[2])),
-        normalTile(Vector2(40, absY[3])),
-        normalTile(Vector2(230, absY[4])),
-        normalTile(Vector2(60, absY[5])),
+        normalTile(Vector2(150, absY[0])),
+        normalTile(Vector2(50, absY[1])),
+        normalTile(Vector2(constants.screen_size[0] - 50, absY[2])),
+        normalTile(Vector2(150, absY[3])),
+        normalTile(Vector2(40, absY[4])),
+        normalTile(Vector2(230, absY[5])),
+        normalTile(Vector2(60, absY[6])),
     ]
 
 
 def level3(lastY):
     distOfTileFromPrev = [
         -80,
+        -100,
         -140,
         -100,
         -100,
@@ -51,11 +55,12 @@ def level3(lastY):
     ]
     absY = getAbsPos(lastY, distOfTileFromPrev)
     return [
-        movingAsCharOnX(Vector2(50, absY[0])),
-        normalTile(Vector2(150, absY[1])),
-        disappearingTile(Vector2(40, absY[2])),
-        normalTile(Vector2(230, absY[3])),
-        normalTile(Vector2(60, absY[4])),
+        normalTile(Vector2(150, absY[0])),
+        movingAsCharOnX(Vector2(50, absY[1])),
+        normalTile(Vector2(150, absY[2])),
+        disappearingTile(Vector2(40, absY[3])),
+        normalTile(Vector2(230, absY[4])),
+        normalTile(Vector2(60, absY[5])),
     ]
 
 
@@ -85,6 +90,7 @@ def level4(lastY):
 def level5(lastY):
     distOfTileFromPrev = [
         -80,
+        -80,
         -440,
         -440,
         -440,
@@ -93,12 +99,13 @@ def level5(lastY):
     ]
     absY = getAbsPos(lastY, distOfTileFromPrev)
     return [
-        jumpingTile(Vector2(50, absY[0])),
-        jumpingTile(Vector2(constants.screen_size[0] - 50, absY[1])),
-        jumpingTile(Vector2(50, absY[2])),
-        normalTile(Vector2(constants.screen_size[0] - 50, absY[3])),
-        disappearingTile(Vector2(230, absY[4])),
-        disappearingTile(Vector2(60, absY[5])),
+        normalTile(Vector2(150, absY[0])),
+        jumpingTile(Vector2(50, absY[1])),
+        jumpingTile(Vector2(constants.screen_size[0] - 50, absY[2])),
+        jumpingTile(Vector2(50, absY[3])),
+        normalTile(Vector2(constants.screen_size[0] - 50, absY[4])),
+        disappearingTile(Vector2(230, absY[5])),
+        disappearingTile(Vector2(60, absY[6])),
     ]
 
 
@@ -135,10 +142,20 @@ def getAbsPos(start, distOfTileFromPrev):
     return ans
 
 
+levelTypes = [
+    level1,
+    level2,
+    level3,
+    level4,
+    level5,
+    level6
+]
+
+
 def appendLevel(objs, group_collider):
     if len(objs) == 0:
-        lev = level1(630)
+        lev = random.choice(levelTypes)(630)
     else:
-        lev = level6(objs[-1].rect.midbottom[1])
+        lev = random.choice(levelTypes)(objs[-1].rect.midbottom[1])
     objs += lev
     group_collider.add(lev)
