@@ -13,10 +13,6 @@ class MovableObjectsManager:
         self.objs.remove(movable_obj)
         self.group.remove(movable_obj)
 
-    def addTile(self, offset=10, type_of_tile=0):
-        # todo
-        pass
-
     def draw(self, screen):
         self.group.draw(screen)
 
