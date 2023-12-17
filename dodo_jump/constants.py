@@ -36,7 +36,7 @@ projectile = './assets/grr.png'
 
 wings_active = './assets/wings_active.png'
 wings_inactive = './assets/wings_inactive.png'
-wings_y_vel = -600
+wings_y_vel = -1000
 wings_ttl = 2
 
 
