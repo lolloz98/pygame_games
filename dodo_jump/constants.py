@@ -38,6 +38,7 @@ wings_active = './assets/wings_active.png'
 wings_inactive = './assets/wings_inactive.png'
 wings_y_vel = -1000
 wings_ttl = 2
+min_wings_vel = -100
 
 
 class Dir(Enum):
