@@ -117,6 +117,9 @@ while True:
         score += diff
         obj_manager.push_down_tiles(diff, score)
 
+    for obj in obj_manager.objs:
+        obj.effect.applyEachFrame(obj, dodo, dt)
+
     obj_manager.draw(screen)
     dodo.draw(screen)
     proj_manager.draw(screen)

@@ -1,6 +1,7 @@
 from pygame import Vector2
 from tile import *
 from enemy import *
+from powerup import *
 import random
 
 
@@ -18,7 +19,7 @@ def level1(lastY):
         normalTile(Vector2(250, absY[1])),
         normalTile(Vector2(50, absY[2])),
         normalTile(Vector2(170, absY[3])),
-        normalTile(Vector2(175, absY[4])),
+        flyPowerup(Vector2(175, absY[4])),
     ]
 
 
@@ -155,7 +156,8 @@ levelTypes = [
 def appendLevel(objs, group_collider, score):
     # todo use score to select difficulty of level based on score
     if len(objs) == 0:
-        lev = random.choice(levelTypes)(630)
+        # lev = random.choice(levelTypes)(630)
+        lev = level1(630)
     else:
         lev = random.choice(levelTypes)(objs[-1].rect.midbottom[1])
     objs += lev

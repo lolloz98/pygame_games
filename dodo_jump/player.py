@@ -20,7 +20,20 @@ class Player(pygame.sprite.Sprite):
         self.x_dir = Dir.NONE
         self.prev_pos = pygame.Vector2(position)
         self.hasDied = False
+
         self.shootingActive = True
+        self.isInvulnerable = False
+        self.collisionsActive = True
+
+    def equipPowerup(self):
+        self.shootingActive = False
+        self.isInvulnerable = True
+        self.collisionsActive = False
+
+    def removePowerup(self):
+        self.shootingActive = True
+        self.isInvulnerable = False
+        self.collisionsActive = True
 
     def draw(self, screen):
         self.group.draw(screen)
@@ -29,6 +42,8 @@ class Player(pygame.sprite.Sprite):
         return self.shootingActive
 
     def checkCollisions(self, obj_manager):
+        if not self.collisionsActive:
+            return
         hits = pygame.sprite.groupcollide(obj_manager.group, self.group, False, False)
         for hit in hits:
             prev_rect = self.image.get_rect(midbottom=self.prev_pos)
@@ -69,4 +84,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.midbottom = (constants.screen_size[0], self.rect.midbottom[1])
 
     def die(self):
+        if self.isInvulnerable:
+            return
         self.hasDied = True

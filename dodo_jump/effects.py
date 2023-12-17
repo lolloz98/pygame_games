@@ -19,6 +19,9 @@ class Effect:
     def onProjectileHitIsProjConsumed(self, obj, obj_manager):
         return False
 
+    def applyEachFrame(self, obj, character: player.Player, dt):
+        pass
+
 
 class MoveXEffect(Effect):
     def applyEffectToTile(self, obj, dt):
@@ -89,3 +92,43 @@ class BasicEnemy(DisappearingObj):
         obj_manager.remove(obj)
         return True
 
+
+class WindPowerup(Effect):
+    def __init__(
+            self,
+            active_player_vel_y=constants.wings_y_vel,
+            active_image_file_name=constants.wings_active,
+            ttl=constants.wings_ttl
+    ):
+        super().__init__()
+        self.active = False
+        self.swapped_imgs = False
+        self.ttl = ttl
+        self.active_player_vel_y = active_player_vel_y
+        self.active_img = pygame.Surface.convert_alpha(pygame.image.load(active_image_file_name))
+
+    def applyEffectToPlayerOnBottom(self, character: player.Player):
+        self.onCollision(character)
+
+    def applyEffectToPlayerOnTop(self, character: player.Player):
+        self.onCollision(character)
+
+    def onCollision(self, character: player.Player):
+        self.active = True
+        character.equipPowerup()
+
+    def applyEachFrame(self, obj, character: player.Player, dt):
+        if not self.active:
+            return
+        if not self.swapped_imgs:
+            self.swapped_imgs = True
+            obj.image = self.active_img
+            obj.rect = self.active_img.get_rect(midbottom=character.rect.midbottom)
+
+        self.ttl -= dt
+        obj.rect.midbottom = character.rect.midbottom
+        character.curr_velocity_y = self.active_player_vel_y
+        if self.ttl < 0:
+            self.active = False
+            self.disappear = True
+            character.removePowerup()

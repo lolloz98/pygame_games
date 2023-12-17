@@ -34,6 +34,12 @@ projectile_y_vel = -400
 projectile = './assets/grr.png'
 
 
+wings_active = './assets/wings_active.png'
+wings_inactive = './assets/wings_inactive.png'
+wings_y_vel = -600
+wings_ttl = 2
+
+
 class Dir(Enum):
     LEFT = -1
     RIGHT = 1
