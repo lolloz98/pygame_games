@@ -30,6 +30,9 @@ move_x_tile = './assets/move_x_tile.png'
 basic_enemy_dims = (40, 40)
 wind = './assets/wind.png'
 
+projectile_y_vel = -400
+projectile = './assets/grr.png'
+
 
 class Dir(Enum):
     LEFT = -1

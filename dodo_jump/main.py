@@ -4,6 +4,7 @@ import constants
 import movable_obj_manager
 import player
 import time
+import projectile_manager
 
 pygame.init()
 
@@ -27,6 +28,7 @@ next_score_for_inc: int = 0
 
 obj_manager: movable_obj_manager.MovableObjectsManager = None
 dodo: player.Player = None
+proj_manager: projectile_manager.ProjectileManager = None
 
 
 def reset():
@@ -42,6 +44,8 @@ def reset():
     obj_manager = movable_obj_manager.MovableObjectsManager()
     global dodo
     dodo = player.Player()
+    global proj_manager
+    proj_manager = projectile_manager.ProjectileManager()
 
 
 reset()
@@ -75,8 +79,8 @@ while True:
                     pass
                 if event.key == pygame.K_d:
                     dodo.changeInDir(player.Dir.RIGHT, pygame.KEYDOWN)
-                if event.key == pygame.K_f:
-                    pass
+                if event.key == pygame.K_SPACE:
+                    proj_manager.addProj(dodo)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
                 dodo.changeInDir(player.Dir.LEFT, pygame.KEYUP)
@@ -102,6 +106,10 @@ while True:
     dodo.moveX(dt)
     dodo.moveY(dt)
     dodo.checkCollisions(obj_manager)
+
+    proj_manager.checkCollision(obj_manager)
+    proj_manager.moveProj(dodo.curr_velocity_y, dt)
+
     if dodo.rect.midbottom[1] < constants.lift_screen_height:
         diff = constants.lift_screen_height - dodo.rect.midbottom[1]
         dodo.rect.midbottom = (dodo.rect.midbottom[0], constants.lift_screen_height)
@@ -110,6 +118,7 @@ while True:
 
     obj_manager.draw(screen)
     dodo.draw(screen)
+    proj_manager.draw(screen)
     screen.blit(
         text_surface,
         text_surface.get_rect(topright=(int(constants.screen_size[0] * 0.9), int(constants.screen_size[1] * 0.03)))

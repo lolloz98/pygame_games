@@ -16,6 +16,9 @@ class Effect:
     def applyEffectToTile(self, obj, dt):
         pass
 
+    def onProjectileHitIsProjConsumed(self, obj, obj_manager):
+        return False
+
 
 class MoveXEffect(Effect):
     def applyEffectToTile(self, obj, dt):
@@ -82,5 +85,7 @@ class BasicEnemy(DisappearingObj):
     def applyEffectToPlayerOnBottom(self, character: player.Player):
         character.die()
 
-
+    def onProjectileHitIsProjConsumed(self, obj, obj_manager):
+        obj_manager.remove(obj)
+        return True
 
