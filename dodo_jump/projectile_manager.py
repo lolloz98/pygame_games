@@ -43,7 +43,6 @@ class ProjectileManager:
         toRem = []
         hits = pygame.sprite.groupcollide(movable_obj_manager.group, self.group, False, False)
         for hit in hits:
-            print("here", hits[hit])
             remProj = hit.effect.onProjectileHitIsProjConsumed(hit, movable_obj_manager)
             if remProj:
                 toRem.append(hits[hit])
