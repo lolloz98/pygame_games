@@ -20,9 +20,13 @@ class Player(pygame.sprite.Sprite):
         self.x_dir = Dir.NONE
         self.prev_pos = pygame.Vector2(position)
         self.hasDied = False
+        self.shootingActive = True
 
     def draw(self, screen):
         self.group.draw(screen)
+
+    def canShoot(self):
+        return self.shootingActive
 
     def checkCollisions(self, obj_manager):
         hits = pygame.sprite.groupcollide(obj_manager.group, self.group, False, False)

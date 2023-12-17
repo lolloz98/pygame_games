@@ -80,7 +80,8 @@ while True:
                 if event.key == pygame.K_d:
                     dodo.changeInDir(player.Dir.RIGHT, pygame.KEYDOWN)
                 if event.key == pygame.K_SPACE:
-                    proj_manager.addProj(dodo)
+                    if dodo.canShoot():
+                        proj_manager.addProj(dodo)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
                 dodo.changeInDir(player.Dir.LEFT, pygame.KEYUP)
