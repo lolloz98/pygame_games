@@ -128,7 +128,7 @@ class WindPowerup(Effect):
         self.ttl -= dt
         obj.rect.midbottom = character.rect.midbottom
         character.curr_velocity_y = self.active_player_vel_y
-        self.active_player_vel_y += 40 * dt
+        self.active_player_vel_y += constants.wings_drag * dt
         self.active_player_vel_y = min(self.active_player_vel_y, constants.min_wings_vel)
         if self.ttl < 0:
             character.curr_velocity_y = 0
