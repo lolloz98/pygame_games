@@ -110,7 +110,6 @@ while True:
 
     if dodo.justGotPowerUp:
         dodo.justGotPowerUp = False
-        print(dodo.rect.midbottom, constants.flight_with_wings)
         obj_manager.appendLevelUntil(dodo.rect.midbottom[1] + constants.flight_with_wings, score)
 
     proj_manager.checkCollision(obj_manager)
