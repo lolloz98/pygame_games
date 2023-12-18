@@ -16,6 +16,9 @@ character_image = './assets/dodo.png'
 gravity = 1000
 max_fps = 60
 
+character_max_height = jump_force / gravity
+
+
 lift_screen_height = 400
 
 moving_tile_vel = (100, 100)
@@ -40,6 +43,9 @@ wings_y_vel = -1000
 wings_ttl = 2
 min_wings_vel = -100
 wings_drag = 40
+# In the following we don't consider the wings_y_vel reaching the minimum velocity
+# if we change params we will need to change also this
+flight_with_wings = wings_y_vel * wings_ttl - wings_drag * wings_ttl - gravity * wings_ttl
 
 
 class Dir(Enum):

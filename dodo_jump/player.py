@@ -24,11 +24,13 @@ class Player(pygame.sprite.Sprite):
         self.shootingActive = True
         self.isInvulnerable = False
         self.collisionsActive = True
+        self.justGotPowerUp = False
 
     def equipPowerup(self):
         self.shootingActive = False
         self.isInvulnerable = True
         self.collisionsActive = False
+        self.justGotPowerUp = True
 
     def removePowerup(self):
         self.shootingActive = True

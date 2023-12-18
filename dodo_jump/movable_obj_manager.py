@@ -16,6 +16,14 @@ class MovableObjectsManager:
     def draw(self, screen):
         self.group.draw(screen)
 
+    def appendLevelUntil(self, pos, score):
+        pos += constants.character_max_height
+        while self.objs[-1].rect.midtop[1] >= pos:
+            appendLevel(self.objs, self.group, score)
+        while len(self.objs) > 0 and self.objs[-1].rect.midbottom[1] <= pos:
+            self.remove(self.objs[-1])
+        appendLevel(self.objs, self.group, score, pos)
+
     def appendLevels(self, score):
         while len(self.objs) == 0 or self.objs[-1].rect.midtop[1] > 0:
             appendLevel(self.objs, self.group, score)
