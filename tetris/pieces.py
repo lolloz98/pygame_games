@@ -106,7 +106,6 @@ class Piece:
         self.size_of_block = size_of_block
         self.center = center
         self.setBlocksPos()
-        self.hasCollided = False
 
     def setBlocksPos(self):
         for i, b in enumerate(self.blocks):
@@ -181,12 +180,6 @@ class Piece:
 
     def draw(self, screen):
         self.group.draw(screen)
-
-    def setHasCollided(self, val=True):
-        self.hasCollided = val
-
-    def collidedBefore(self):
-        return self.hasCollided
 
 
 class SingleBlock(pygame.sprite.Sprite):

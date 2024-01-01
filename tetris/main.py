@@ -25,8 +25,9 @@ tile_manager: TileManager = None
 score: int = 0
 started: bool = False
 died: bool = False
-difficulty: int = 0
+difficulty: float = 0
 next_score_for_inc: int = 0
+
 
 def reset():
     global piece
@@ -40,14 +41,29 @@ def reset():
     global died
     died = False
     global difficulty
-    difficulty = 5
+    difficulty = 0
     global next_score_for_inc
     next_score_for_inc = 10
 
 
 reset()
 
+# We make this project to be fps independent
+last_time = time.time()
+since_down = 0
 while True:
+    tmp = time.time()
+    dt = tmp - last_time
+    last_time = tmp
+
+    if dt > 3 / 60:
+        # if dt gets too large the steps of character becomes too large and we might get
+        # weird behaviour
+        continue
+
+    since_down += dt
+
+    immediately_down = False
     # draw our elements and update everything
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -63,31 +79,40 @@ while True:
             if event.key == pygame.K_s:
                 piece.move(pieces.Dir.RIGHT, tile_manager.group)
             if event.key == pygame.K_d:
-                pass
+                immediately_down = True
             if event.key == pygame.K_f:
                 piece.rotate(tile_manager.group)
-    if started:
-        piece.down()
 
-    if piece.collidedBefore():
-        if piece.isCollided(tile_manager.group, height):
-            piece.up()
-            tile_manager.addBlocks(piece.blocks)
+    keys = pygame.key.get_pressed()
+    tmp_time_to_go_down = 1 - difficulty
+    if keys[pygame.K_SPACE]:
+        tmp_time_to_go_down /= 3
+
+    if started and since_down > tmp_time_to_go_down and not immediately_down:
+        piece.down()
+        since_down = 0
+    elif immediately_down and started:
+        while not piece.isCollided(tile_manager.group, height):
+            piece.down()
+
+    if piece.isCollided(tile_manager.group, height):
+        piece.up()
+        tile_manager.addBlocks(piece.blocks)
+        s = tile_manager.detectAndDeleteCompleteRows()
+        while s != 0:
+            score += s * s
             s = tile_manager.detectAndDeleteCompleteRows()
-            while s != 0:
-                score += s * s
-                s = tile_manager.detectAndDeleteCompleteRows()
-            piece = pieces.generateRandomPiece(spawn_point, block_size)
-            if piece.isCollided(tile_manager.group, height):
-                started = False
-                died = True
-        else:
-            piece.setHasCollided(False)
+        piece = pieces.generateRandomPiece(spawn_point, block_size)
+        if piece.isCollided(tile_manager.group, height):
+            started = False
+            died = True
+
     if not died and piece.isCollided(tile_manager.group, height):
         piece.up()
-        piece.setHasCollided()
+
     if not died and started and next_score_for_inc < score:
-        difficulty += (score - next_score_for_inc) // 10 + 1
+        difficulty += (score - next_score_for_inc) // 100 + 0.1
+        difficulty = min(1, difficulty)
         next_score_for_inc = (score // 10) * 10 + 10
 
     screen.fill('#000000')
@@ -98,7 +123,7 @@ while True:
     screen.blit(text_surface, (int(width * 0.70), int(height * 0.03)))
     if died:
         screen.fill('#000000')
-        difficulty = 5
+        difficulty = 0
         died_surface = die_font.render('You Died!', False, '#FFFFFF')
         die_rect = died_surface.get_rect(midbottom=(int(width * 0.5), int(height * 0.5)))
         screen.blit(died_surface, die_rect)
@@ -107,4 +132,4 @@ while True:
         screen.blit(big_score_surface, big_score_ret)
     pygame.display.update()
     # Here we use a "hack" to increase difficulty: we just increment the fps to increment it
-    clock.tick(difficulty)
+    clock.tick(60)
