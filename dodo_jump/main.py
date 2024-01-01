@@ -9,7 +9,7 @@ import projectile_manager
 pygame.init()
 
 screen = pygame.display.set_mode(constants.screen_size)
-background = pygame.Surface.convert_alpha(pygame.image.load(constants.background_img))
+background = pygame.image.load(constants.background_img)
 background_rect = background.get_rect(topleft=(0, 0))
 
 pygame.display.set_caption('Dodo Game')
